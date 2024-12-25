@@ -2,7 +2,12 @@
 <button (click)="startGame()">Start</button>
 <h1>Score : {{ score }}</h1>
 <h1>High Score : {{ highScore }}</h1>
-
+<div class="form-check">
+  <label class="form-check-label">
+    <input type="checkbox" class="form-check-input"(ngModelChange)="highSpeedModeChange($event)" [(ngModel)]="highSpeedMode" name="" id="" value="checkedValue" checked>
+    HighSpeed Mode
+  </label>
+</div>
 <div class="d-flex flex-column">
 <div class="row">
   <div class="col">
