@@ -15,6 +15,10 @@ export class GameComponent implements OnInit {
   score: number = 0;
   highScore: number = 0;
   moveInterval: any;
+  touchStartX: number = 0;
+  touchStartY: number = 0;
+  touchEndX: number = 0;
+  touchEndY: number = 0;
 
   ngOnInit() {
     for (let i = 0; i < 20; i++) {
@@ -23,34 +27,72 @@ export class GameComponent implements OnInit {
         this.board[i][j] = 0;
       }
     }
-    this.attachKeyListners();
+    this.attachKeyListeners();
+    this.attachTouchListeners();
   }
 
-  attachKeyListners() {
-    document.addEventListener('keydown', (event) => {
-      switch (event.key) {
-        case 'ArrowUp':
-          if (this.direction !== 'down') {
-            this.direction = 'up';
-          }
-          break;
-        case 'ArrowDown':
-          if (this.direction !== 'up') {
-            this.direction = 'down';
-          }
-          break;
-        case 'ArrowLeft':
-          if (this.direction !== 'right') {
-            this.direction = 'left';
-          }
-          break;
-        case 'ArrowRight':
-          if (this.direction !== 'left') {
-            this.direction = 'right';
-          }
-          break;
+  attachKeyListeners() {
+    document.addEventListener('keydown', this.handleKeyListeners.bind(this));
+  }
+
+  attachTouchListeners() {
+    document.addEventListener('touchstart', this.handleTouchStart.bind(this));
+    document.addEventListener('touchend', this.handleTouchEnd.bind(this));
+  }
+
+  handleKeyListeners(event: KeyboardEvent) {
+    switch (event.key) {
+      case 'ArrowUp':
+        if (this.direction !== 'down') {
+          this.direction = 'up';
+        }
+        break;
+      case 'ArrowDown':
+        if (this.direction !== 'up') {
+          this.direction = 'down';
+        }
+        break;
+      case 'ArrowLeft':
+        if (this.direction !== 'right') {
+          this.direction = 'left';
+        }
+        break;
+      case 'ArrowRight':
+        if (this.direction !== 'left') {
+          this.direction = 'right';
+        }
+        break;
+    }
+  }
+
+  handleTouchStart(event: TouchEvent) {
+    this.touchStartX = event.changedTouches[0].screenX;
+    this.touchStartY = event.changedTouches[0].screenY;
+  }
+
+  handleTouchEnd(event: TouchEvent) {
+    this.touchEndX = event.changedTouches[0].screenX;
+    this.touchEndY = event.changedTouches[0].screenY;
+    this.handleSwipeGesture();
+  }
+
+  handleSwipeGesture() {
+    const deltaX = this.touchEndX - this.touchStartX;
+    const deltaY = this.touchEndY - this.touchStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0 && this.direction !== 'left') {
+        this.direction = 'right';
+      } else if (deltaX < 0 && this.direction !== 'right') {
+        this.direction = 'left';
       }
-    });
+    } else {
+      if (deltaY > 0 && this.direction !== 'up') {
+        this.direction = 'down';
+      } else if (deltaY < 0 && this.direction !== 'down') {
+        this.direction = 'up';
+      }
+    }
   }
 
   startGame() {
@@ -63,7 +105,6 @@ export class GameComponent implements OnInit {
       this.moveSnake();
     }, 100);
   }
-
 
   moveSnake() {
     let head = this.snake[this.snake.length - 1];
@@ -87,10 +128,12 @@ export class GameComponent implements OnInit {
 
     if (this.isGameOver(newHead)) {
       clearInterval(this.moveInterval);
-      alert('Game Over! score: ' + this.score + ' high score: ' + this.highScore);
+      alert(
+        'Game Over! score: ' + this.score + ' high score: ' + this.highScore
+      );
       this.clearGameDetails();
       return;
-    } else if(this.isFood(newHead[0], newHead[1])){
+    } else if (this.isFood(newHead[0], newHead[1])) {
       this.snake.push(newHead);
       this.generateFood();
       this.score++;
@@ -100,14 +143,14 @@ export class GameComponent implements OnInit {
     this.snake.push(newHead);
   }
 
-  growSnake(){
+  growSnake() {
     let head = this.snake[this.snake.length - 1];
   }
 
   clearGameDetails() {
     this.snake = [];
     this.food = [5, 5];
-    if(this.score > this.highScore){
+    if (this.score > this.highScore) {
       this.highScore = this.score;
     }
     this.score = 0;
@@ -117,7 +160,6 @@ export class GameComponent implements OnInit {
         this.board[i][j] = 0;
       }
     }
-  
   }
 
   generateFood() {
@@ -132,9 +174,9 @@ export class GameComponent implements OnInit {
 
   customRandom(min: number, max: number) {
     const seed = Date.now() % 1000;
-    const random = (seed * 9301 + 49297) % 233280 / 233280;
+    const random = ((seed * 9301 + 49297) % 233280) / 233280;
     return Math.floor(random * (max - min + 1)) + min;
-}
+  }
 
   isGameOver(newHead: number[]) {
     if (
@@ -144,7 +186,7 @@ export class GameComponent implements OnInit {
       newHead[1] > 19
     ) {
       return true;
-    } else if(this.isSnake(newHead[0], newHead[1])) {
+    } else if (this.isSnake(newHead[0], newHead[1])) {
       return true;
     } else {
       return false;
