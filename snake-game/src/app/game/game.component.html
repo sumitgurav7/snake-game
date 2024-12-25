@@ -3,8 +3,27 @@
 <h1>Score : {{ score }}</h1>
 <h1>High Score : {{ highScore }}</h1>
 
-<div id="game-board" class="game-board">
-    <div *ngFor="let row of board; let i = index" class="row">
-      <div *ngFor="let cell of row; let j = index" class="cell" [ngClass]="{'snake': isSnake(i, j), 'food': isFood(i, j)}"></div>
+<div class="d-flex flex-column">
+<div class="row">
+  <div class="col">
+    <div id="game-board" class="game-board">
+      <div *ngFor="let row of board; let i = index" class="row">
+        <div *ngFor="let cell of row; let j = index" class="cell" [ngClass]="{'snake': isSnake(i, j), 'food': isFood(i, j)}"></div>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col">
+    <div class="d-pad">
+      <button (click)="changeDirection('up')">Up</button>
+      <div>
+        <button (click)="changeDirection('left')">Left</button>
+        <button (click)="changeDirection('down')">Down</button>
+        <button (click)="changeDirection('right')">Right</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>

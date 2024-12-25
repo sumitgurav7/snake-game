@@ -207,6 +207,31 @@ export class GameComponent implements OnInit {
     return this.food[0] === i && this.food[1] === j;
   }
 
+  changeDirection(direction: string) {
+    switch (direction) {
+      case 'up':
+        if (this.direction !== 'down') {
+          this.direction = 'up';
+        }
+        break;
+      case 'down':
+        if (this.direction !== 'up') {
+          this.direction = 'down';
+        }
+        break;
+      case 'left':
+        if (this.direction !== 'right') {
+          this.direction = 'left';
+        }
+        break;
+      case 'right':
+        if (this.direction !== 'left') {
+          this.direction = 'right';
+        }
+        break;
+    }
+  }
+
 
   ngOnDestroy() {
     clearInterval(this.moveInterval);

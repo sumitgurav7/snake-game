@@ -1,8 +1,8 @@
 /* Game Board Styling */
 .game-board {
     display: grid;
-    grid-template-columns: repeat(20, 20px); /* Adjust grid size as needed */
-    grid-template-rows: repeat(20, 20px);
+    grid-template-columns: repeat(21, 21px); /* Adjust grid size as needed */
+    grid-template-rows: repeat(21, 21px);
     border: 1px solid black;
   }
   
