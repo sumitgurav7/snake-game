@@ -36,8 +36,12 @@ export class GameComponent implements OnInit {
   }
 
   attachTouchListeners() {
-    document.addEventListener('touchstart', this.handleTouchStart.bind(this));
-    document.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    const gameBoardElement = document.getElementById('game-board');
+    if (!gameBoardElement) {
+      return;
+    }
+    gameBoardElement.addEventListener('touchstart', this.handleTouchStart.bind(this));
+    gameBoardElement.addEventListener('touchend', this.handleTouchEnd.bind(this));
   }
 
   handleKeyListeners(event: KeyboardEvent) {
