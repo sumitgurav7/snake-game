@@ -1,0 +1,25 @@
+/* Game Board Styling */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(20, 20px); /* Adjust grid size as needed */
+    grid-template-rows: repeat(20, 20px);
+    border: 1px solid black;
+  }
+  
+  /* Cell Styling */
+  .cell {
+    width: 20px; 
+    height: 20px;
+    border: 1px solid #ccc; 
+    background-color: #fff; 
+  }
+  
+  /* Snake Styling */
+  .snake {
+    background-color: green; 
+  }
+  
+  /* Food Styling */
+  .food {
+    background-color: red; 
+  }

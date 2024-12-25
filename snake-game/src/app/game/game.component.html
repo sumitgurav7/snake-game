@@ -1,0 +1,10 @@
+
+<button (click)="startGame()">Start</button>
+<h1>Score : {{ score }}</h1>
+<h1>High Score : {{ highScore }}</h1>
+
+<div class="game-board">
+    <div *ngFor="let row of board; let i = index" class="row">
+      <div *ngFor="let cell of row; let j = index" class="cell" [ngClass]="{'snake': isSnake(i, j), 'food': isFood(i, j)}"></div>
+    </div>
+</div>
