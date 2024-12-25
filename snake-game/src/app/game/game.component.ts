@@ -66,11 +66,13 @@ export class GameComponent implements OnInit {
   }
 
   handleTouchStart(event: TouchEvent) {
+    event.preventDefault();
     this.touchStartX = event.changedTouches[0].screenX;
     this.touchStartY = event.changedTouches[0].screenY;
   }
 
   handleTouchEnd(event: TouchEvent) {
+    event.preventDefault();
     this.touchEndX = event.changedTouches[0].screenX;
     this.touchEndY = event.changedTouches[0].screenY;
     this.handleSwipeGesture();
@@ -199,5 +201,13 @@ export class GameComponent implements OnInit {
 
   isFood(i: number, j: number) {
     return this.food[0] === i && this.food[1] === j;
+  }
+
+
+  ngOnDestroy() {
+    clearInterval(this.moveInterval);
+    document.removeEventListener('keydown', this.handleKeyListeners.bind(this));
+    document.removeEventListener('touchstart', this.handleTouchStart.bind(this));
+    document.removeEventListener('touchend', this.handleTouchEnd.bind(this));
   }
 }
